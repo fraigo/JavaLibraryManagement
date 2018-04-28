@@ -6,7 +6,7 @@
         <jar destfile="/home/francisco/git/java/LibraryManagement/LibraryManagement.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-                <attribute name="Rsrc-Main-Class" value="app.Main"/>
+                <attribute name="Rsrc-Main-Class" value="controller.Main"/>
                 <attribute name="Class-Path" value="."/>
                 <attribute name="Rsrc-Class-Path" value="./"/>
             </manifest>
