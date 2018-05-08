@@ -1,11 +1,10 @@
-package model;
+package model.comparators;
 
 import java.util.Comparator;
 
-/**
- * This comparator class should be used anytime you need to sort Players by
- * name. The sort must be in alphabetical order.
- */
+import model.Book;
+
+
 public class BookSortByYearPublishedComparator implements Comparator<Book> {
 
 	@Override

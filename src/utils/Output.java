@@ -2,8 +2,6 @@ package utils;
 
 import java.util.ArrayList;
 
-import model.Book;
-
 public class Output {
 	
 	public static final int LINE_SIZE = 40;
@@ -40,9 +38,9 @@ public class Output {
 		}
 	}
 	
-	public static void printListWithTitle(String title,ArrayList list){
+	public static void printListWithTitle(String header,ArrayList list){
 		Output.printBar();
-		Output.printLine(title);
+		Output.printListHeader(header,true);
 		Output.printListWithNumbers(list);
 		Output.printBar();
 		Output.printTitle(list.size()+" element(s)");
@@ -54,7 +52,12 @@ public class Output {
 			printLine(list[i].toString());
 		}
 	}
-
 	
+	public static void printListHeader(String header,boolean numbers){
+		if (numbers){
+			Output.print("    ");
+		}
+		Output.printLine(header);
+	}
 
 }

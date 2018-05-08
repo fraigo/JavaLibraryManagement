@@ -1,8 +1,5 @@
 package model;
 
-import utils.Input;
-import utils.Output;
-
 public enum Genre {
 	
 	FICTION("Fiction"), 

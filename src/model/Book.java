@@ -1,7 +1,5 @@
 package model;
 
-import utils.Input;
-
 /**
  * Book class
  * @author Francisco Igor
@@ -12,45 +10,45 @@ public class Book implements Comparable<Book> {
 	/**
 	 * Title of the book
 	 */
-	String title;
+	private String title;
 	/**
 	 * Author of the book 
 	 */
-	Author author;
+	private Author author;
 	/**
 	 * Year published
 	 */
-	int yearPublished;
+	private int yearPublished;
 	/**
 	 * Number of edition
 	 */
-	int edition;
+	private int edition;
 	/**
 	 * ISBN code of the book
 	 */
-	String ISBN;
+	private String ISBN;
 	/**
 	 * Genre of the book
 	 */
-	Genre genre;
+	private Genre genre;
 	/**
 	 * Number of copies total
 	 */
-	int numberOfCopies;
+	private int numberOfCopies;
 	/**
 	 * Number of copies available
 	 */
-	int copiesAvailable;
+	private int copiesAvailable;
 	
 	
 	public Book(String title, Author author, int yearPublished, int edition,
-			String iSBN, Genre genre, int numberOfCopies) {
+			String isbn, Genre genre, int numberOfCopies) {
 		super();
 		setTitle(title);
 		setAuthor(author);
 		setYearPublished(yearPublished);
 		setEdition(edition);
-		setISBN(iSBN);
+		setISBN(isbn);
 		setGenre(genre);
 		setNumberOfCopies(numberOfCopies);
 		setCopiesAvailable(numberOfCopies);
@@ -105,19 +103,13 @@ public class Book implements Comparable<Book> {
 		this.copiesAvailable = copiesAvailable;
 	}
 
-	public static String stringHeader() {
+	public static String getListHeader() {
 		return String.format("%-30s|%-20s|%4s|%7s|%5s|%9s|%8s", "Title", "Author", "Year", "Edition", "Total", "Available", "Borrowed");
 	}
 	
 	@Override
 	public String toString() {
 		return String.format("%-30s|%-20s|%4d|%7d|%5d|%9d|%8d", title, author.getPseudonym(), yearPublished, edition, numberOfCopies, copiesAvailable, numberOfCopies-copiesAvailable);
-		/*
-		return "Book [title=" + title + ", author=" + author
-				+ ", yearPublished=" + yearPublished + ", edition=" + edition
-				+ ", ISBN=" + ISBN + ", genre=" + genre + ", numberOfCopies="
-				+ numberOfCopies + ", copiesAvailable=" + copiesAvailable + "]";
-			*/
 	}
 
 	@Override

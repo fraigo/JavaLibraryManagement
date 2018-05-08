@@ -5,21 +5,29 @@ import java.time.LocalDate;
 
 public class Customer extends Person {
 	
-	String customerId;
-	boolean active;
+	private String customerId;
+	private boolean active;
 	
 	
 	public Customer(String firstname, String lastName, LocalDate dateOfBirth,
-			String customerId, boolean active) {
+			String customerId, boolean active) throws Exception {
 		super(firstname, lastName, dateOfBirth);
-		this.customerId = customerId;
+		this.setCustomerId(customerId);
 		this.active = active;
 	}
 	
 	public String getCustomerId() {
 		return customerId;
 	}
-	public void setCustomerId(String customerId) {
+	
+	public static void checkCustomerId(String customerId) throws Exception{
+		if (!customerId.matches("[A-Z]{2}[0-9]{3}")){
+			throw new java.lang.IllegalArgumentException("Invalid customer ID "+customerId+", use format AB123 (2 letters and 3 numbers)");			
+		}
+	}
+	
+	public void setCustomerId(String customerId)  throws Exception{
+		checkCustomerId(customerId);
 		this.customerId = customerId;
 	}
 	public boolean isActive() {
@@ -29,11 +37,19 @@ public class Customer extends Person {
 		this.active = active;
 	}
 
+	public static String getListHeader(){
+		return String.format("%-8s|%-30s|%9s","Cust.ID","Name","BirthDate");
+	}
+	
 	@Override
 	public String toString() {
-		return "Customer [customerId=" + customerId + ", active=" + active
-				+ ", firstname=" + firstname + ", lastName=" + lastName
-				+ ", dateOfBirth=" + dateOfBirth + "]";
+		String result;
+		result = String.format("%-8s|%-30s|%9s", 
+				this.getCustomerId(), 
+				this.getFullname(), 
+				this.getDateOfBirth()
+		);
+		return result;
 	}
 
 	@Override

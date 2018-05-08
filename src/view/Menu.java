@@ -16,7 +16,7 @@ public class Menu {
 	public static final String OPTION_VIEW_BORROWINGS = "Borrowings List";
 	public static final String OPTION_ADD_BORROWING = "Add Borrowing";
 	public static final String OPTION_RETURN_BORROWING = "Return Borrowing";
-	public static final String OPTION_VIEW_CUSTOMERS = "Custoemr List";
+	public static final String OPTION_VIEW_CUSTOMERS = "Customer List";
 	public static final String OPTION_ADD_CUSTOMER = "Add Customer";
 	ArrayList<String> options;
 	Scanner scanner;

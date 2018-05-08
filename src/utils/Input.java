@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import model.Genre;
 
 public class Input {
 	
@@ -46,10 +45,10 @@ public class Input {
 		return date;
 	}
 	
-	public static Object selectObjectFromList(String message, Object[] list) {
+	public static Object selectObjectFromList(String header, Object[] list) {
 		int option;
 		do{
-			Output.printLine(message);
+			Output.printListHeader(header,true);
 			Output.printListWithNumbers(list);
 			Output.printBar();
 			

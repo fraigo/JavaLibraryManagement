@@ -1,18 +1,14 @@
 package model;
 
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-
-import utils.Output;
-
 
 public class Library {
 	
-	String name;
-	ArrayList<Book> books;
-	ArrayList<Customer> customers;
-	ArrayList<Borrowing> borrowings;
+	private String name;
+	private ArrayList<Book> books;
+	private ArrayList<Customer> customers;
+	private ArrayList<Borrowing> borrowings;
 
 	
 	
@@ -45,24 +41,43 @@ public class Library {
 	public ArrayList<Borrowing> getBorrowings() {
 		return borrowings;
 	}
-	public void addBorrowing(Borrowing borrowing) {
+	
+	public void addBorrowing(Borrowing borrowing) throws Exception {
 		if (books.containsAll(borrowing.getBooks())){
-			this.borrowings.add(borrowing);
+			ArrayList<String> unavailable=new ArrayList<String>();
 			for (int i = 0; i < borrowing.getBooks().size(); i++) {
 				Book book=borrowing.getBooks().get(i);
-				book.copiesAvailable--;
+				if (book.getCopiesAvailable()==0){
+					unavailable.add(book.getTitle());
+				}
+				if (unavailable.size()>0){
+					throw new Exception("Some books are not available ("+unavailable.toString()+")");
+				}
 			}
-			Output.printLine("OK: Borrowing added");
+			for (int i = 0; i < borrowing.getBooks().size(); i++) {
+				Book book=borrowing.getBooks().get(i);
+				book.setCopiesAvailable(book.getCopiesAvailable()-1);
+			}
+			this.borrowings.add(borrowing);
 		}else{
-			Output.printLine("ERROR: Some books are not in library");
+			throw new Exception("ERROR: Some books are not in library");
 		}
 	}
 	
 	
 	@Override
 	public String toString() {
-		return "Library [name=" + name + ", books=" + books + ", customers="
-				+ customers + ", borrowings=" + borrowings + "]";
+		return "Library [name=" + name + ", books=" + books.size() + ", customers="
+				+ customers.size() + ", borrowings=" + borrowings.size() + "]";
+	}
+
+	public void returnBorrowing(Borrowing borrowing) {
+		borrowing.setFinished(true);
+		for (int i = 0; i < borrowing.getBooks().size(); i++) {
+			Book book=borrowing.getBooks().get(i);
+			book.setCopiesAvailable(book.getCopiesAvailable()+1);
+		}
+		this.borrowings.remove(borrowing);		
 	} 
 	
 	

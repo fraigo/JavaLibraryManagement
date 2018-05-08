@@ -49,6 +49,12 @@ public class Main {
 			if (option.equals(Menu.OPTION_RETURN_BORROWING)){
 				returnBorrowing();
 			}
+			if (option.equals(Menu.OPTION_ADD_CUSTOMER)){
+				addCustomer();
+			}
+			if (option.equals(Menu.OPTION_VIEW_CUSTOMERS)){
+				viewCustomers();
+			}
 			Input.getString("Press [ENTER] to return to the main menu");
 		} while(!option.equals(Menu.OPTION_EXIT));
 
@@ -56,13 +62,19 @@ public class Main {
 	
 	
 	private static void returnBorrowing() {
-		Borrowing b= (Borrowing)Input.selectObjectFromList("Select a borrowing to return: ",lib.getBorrowings());
-		lib.getBorrowings().remove(b);
+		Output.printLine("Select a borrowing to return: ");
+		Borrowing b= (Borrowing)Input.selectObjectFromList(Borrowing.getListHeader(),lib.getBorrowings());
+		lib.returnBorrowing(b);
 	}
 
-
-
-
+	private static void addCustomer(){
+		Customer cust=createCustomer();
+		lib.addCustomer(cust);
+		Output.printLine("Customer created");
+		Output.printLine(Customer.getListHeader());
+		Output.printLine(cust.toString());
+	}
+	
 	private static void addBorrowing() {
 		Customer customer = selectCustomer("Select the customer: ");
 		String answer;
@@ -76,9 +88,14 @@ public class Main {
 			borrowing.addBook(book);
 			answer = Input.getString("Add more books (Y/N) ? ").toLowerCase();
 		}
-			
-		lib.addBorrowing(borrowing);
 		
+		try {
+			lib.addBorrowing(borrowing);			
+		} catch (Exception e) {
+			Output.printLine("ERROR: "+e.getMessage());
+		}
+		Output.printLine("Borrowing created");
+		Output.printLine(Borrowing.getListHeader());
 		Output.printLine(borrowing.toString());
 	}
 
@@ -88,22 +105,32 @@ public class Main {
 
 
 	private static void viewCatalogue(){
-		Output.printListWithTitle("    "+Book.stringHeader(),lib.getBooks());
+		Output.printListWithTitle(Book.getListHeader(),lib.getBooks());
 	}
 	
 	private static void viewBorrowings(){
-		Output.printListWithTitle("Active borrowings",lib.getBorrowings());
+		Output.printListWithTitle(Borrowing.getListHeader(),lib.getBorrowings());
 	}
 
+	private static void viewCustomers(){
+		Output.printLine("Customer list");
+		Output.printListWithTitle(Customer.getListHeader(),lib.getCustomers());
+	}
+	
 	private static void addBook(){
 		Book book=createBook();
 		lib.addBook(book);
+		Output.printLine("Book added ");
+		Output.printLine(Book.getListHeader());
+		Output.printLine(book.toString());
 	}
 	
 	
 
 	private static Customer selectCustomer(String message) {
-		return (Customer)Input.selectObjectFromList(message,lib.getCustomers());
+		Output.printLine(message);
+		
+		return (Customer)Input.selectObjectFromList(Customer.getListHeader(),lib.getCustomers());
 	}
 
 	public static Genre selectGenre(String message) {
@@ -113,7 +140,8 @@ public class Main {
 	public static Book selectBook(String message, boolean checkAvailability) {
 		Book book;
 		do{
-			book=(Book)Input.selectObjectFromList(message,lib.getBooks());
+			Output.printLine(message);
+			book=(Book)Input.selectObjectFromList(Book.getListHeader(),lib.getBooks());
 			if (checkAvailability && book.getCopiesAvailable()==0){
 				Output.printLine("Book not available");
 			}
@@ -143,6 +171,31 @@ public class Main {
 		return new Author(firstname, lastName, dateOfBirth, pseudonym, specialty);
 	}
 	
+	public static Customer createCustomer() {
+		String firstname = Input.getString("First name of customer: ");
+		String lastName = Input.getString("Last name of customer: ");
+		LocalDate dateOfBirth = Input.getDate("Date of birth of customer: ");
+		String customerId = null;
+		while(true){
+			 customerId = Input.getString("Customer Id: ");
+			 try {
+				 Customer.checkCustomerId(customerId);
+				 break;
+			} catch (Exception e) {
+				Output.printLine("Error: "+e.getMessage());
+			}
+		}
+		boolean active = Input.getString("Is customer active (Y/N)?: ").toLowerCase().equals("y");
+		Customer c;
+		try {
+			c=new Customer(firstname, lastName, dateOfBirth, customerId, active);
+			return c;
+		} catch (Exception e) {
+			Output.printLine("ERROR: "+e.getMessage());
+		}
+		return null;
+	}
+
 	private static void initializeLibrary(){
 		lib = new Library("CICC Library");
 		Author jrrTolkien=new Author(
@@ -189,16 +242,26 @@ public class Main {
 				2);
 		lib.addBook(book3);
 		
-		Customer customer=new Customer(
-				"Client", 
-				"Reader1", 
-				LocalDate.parse("2001-10-22"), 
-				"F34634363", 
-				true);
-		lib.addCustomer(customer);
+		Customer customer = null;
+		try{
+			customer=new Customer(
+					"Client", 
+					"Reader1", 
+					LocalDate.parse("2001-10-22"), 
+					"CC463", 
+					true);
+			lib.addCustomer(customer);
+			
+		}catch(Exception ex){
+			Output.printLine("ERROR:" + ex.getMessage());
+		}
 		
 		Borrowing borrowing = new Borrowing(customer, LocalDate.now(), book1);
-		lib.addBorrowing(borrowing);
+		try {
+			lib.addBorrowing(borrowing);			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		
 	}
 }

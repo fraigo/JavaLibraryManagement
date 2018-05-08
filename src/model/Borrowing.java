@@ -9,11 +9,12 @@ import utils.Output;
 public class Borrowing {
 	
 	public static final int MAXIMUM_BOOKS = 5;
-	ArrayList<Book> books;
-	Customer customer;
-	boolean finished;
-	LocalDate borrowedDate;
-	LocalDate returnDate;
+	
+	private ArrayList<Book> books;
+	private Customer customer;
+	private boolean finished;
+	private LocalDate borrowedDate;
+	private LocalDate returnDate;
 	
 	public Borrowing(Customer customer, LocalDate borrowedDate, Book book) {
 		super();
@@ -24,14 +25,24 @@ public class Borrowing {
 		addBook(book);
 		
 	}
-
+	
+	public static String getListHeader(){
+		return String.format("%-20s|%-10s|%8s|%5s|","Customer","Date","Finished","Books");
+	}
+	
 	@Override
 	public String toString() {
 		String result;
-		result = String.format("Customer: %20s | Date: %10s | Books: %2d \n", customer.getFullname(), getBorrowedDate().format(DateTimeFormatter.ofPattern("dd-LLL-yyyy")), books.size());
+		result = String.format("%-20s|%10s|%8s|%5d|", 
+				customer.getFullname(), 
+				getBorrowedDate().format(DateTimeFormatter.ofPattern("dd-LLL-yyyy")), 
+				isFinished(),
+				books.size()
+				);
 		for (int i = 0; i < books.size(); i++) {
-			result += String.format("    [Book %2d] %s\n",i+1,books.get(i));
+			result += String.format("[%s]",books.get(i).getTitle());
 		}
+		result += "\n";
 		return result;
 	}
 
