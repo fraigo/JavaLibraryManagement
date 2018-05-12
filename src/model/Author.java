@@ -28,12 +28,22 @@ public class Author extends Person {
 		setPseudonym(pseudonym);
 		setSpecialty(specialty);
 	}
+	
+	public static String getListHeader(){
+		return String.format("%-20s|%-30s|%-15s|%10s", 
+				"Pseudonym",
+				"Name",
+				"Specialty",
+				"Birth Date");
+	}
 
 	@Override
 	public String toString() {
-		return "Author [pseudonym=" + pseudonym + ", specialty=" + specialty
-				+ ", firstname=" + firstname + ", lastName=" + lastName
-				+ ", dateOfBirth=" + dateOfBirth + "]";
+		return String.format("%-20s|%-30s|%-15s|%10s", 
+					pseudonym ,
+					getFullname(),
+					specialty ,
+					dateOfBirth );
 	}
 
 	public void setPseudonym(String pseudonym) {

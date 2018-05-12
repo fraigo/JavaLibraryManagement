@@ -2,6 +2,9 @@ package controller;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import utils.Input;
 import utils.Output;
 import view.Menu;
@@ -14,6 +17,7 @@ import model.Borrowing;
 import model.Customer;
 import model.Genre;
 import model.Library;
+import model.comparators.BookSortByYearPublishedComparator;
 
 public class Main {
 	
@@ -33,9 +37,10 @@ public class Main {
 		String option;
 		do{
 			option=menu.getMenuSelection(lib.getName());
+			
 			Output.printTitle(option);
 			if (option.equals(Menu.OPTION_VIEW_CATALOGUE)){
-				viewCatalogue();
+				viewBooks();
 			}
 			if (option.equals(Menu.OPTION_ADD_BOOK)){
 				addBook();
@@ -104,8 +109,10 @@ public class Main {
 
 
 
-	private static void viewCatalogue(){
-		Output.printListWithTitle(Book.getListHeader(),lib.getBooks());
+	private static void viewBooks(){
+		ArrayList<Book> books=lib.getBooks();
+		Collections.sort(books,new BookSortByYearPublishedComparator());
+		Output.printListWithTitle(Book.getListHeader(),books);
 	}
 	
 	private static void viewBorrowings(){
@@ -148,11 +155,18 @@ public class Main {
 		} while(checkAvailability && book.getCopiesAvailable()==0);
 		return book;
 	}
-	
+		
 	
 	public static Book createBook(){
+		Author author;
 		String title = Input.getString("Book Title: ");
-		Author author = createAuthor();
+		boolean newAuthor = Input.getString("New author (Y/N)?").toLowerCase().equals("y");
+		if (newAuthor){
+			author = createAuthor();			
+		}else{
+			ArrayList<Author> authors=lib.getBookAuthors();
+			author =(Author)Input.selectObjectFromList(Author.getListHeader(),authors);					
+		}
 		int yearPublished = Input.getInteger("Year published: "); 
 		int edition = Input.getInteger("Edition number: ");
 		String ISBN = Input.getString("ISBN code: ");
@@ -197,7 +211,9 @@ public class Main {
 	}
 
 	private static void initializeLibrary(){
-		lib = new Library("CICC Library");
+		
+		lib = new Library("CICCC Library");
+		
 		Author jrrTolkien=new Author(
 				"John Ronald Reuel", 
 				"Tolkien", 

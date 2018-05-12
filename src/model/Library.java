@@ -10,8 +10,6 @@ public class Library {
 	private ArrayList<Customer> customers;
 	private ArrayList<Borrowing> borrowings;
 
-	
-	
 	public Library(String name) {
 		super();
 		setName(name);
@@ -80,6 +78,17 @@ public class Library {
 		this.borrowings.remove(borrowing);		
 	} 
 	
+	public ArrayList<Author> getBookAuthors(){
+		ArrayList<Author> list=new ArrayList<Author>();
+		for (int i = 0; i < books.size(); i++) {
+			Author a=books.get(i).getAuthor();
+			if (!list.contains(a)){
+				list.add(a);
+			}
+		}
+		return list;
+	}
 	
 
 }
+

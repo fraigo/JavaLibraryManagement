@@ -109,7 +109,14 @@ public class Book implements Comparable<Book> {
 	
 	@Override
 	public String toString() {
-		return String.format("%-30s|%-20s|%4d|%7d|%5d|%9d|%8d", title, author.getPseudonym(), yearPublished, edition, numberOfCopies, copiesAvailable, numberOfCopies-copiesAvailable);
+		return String.format("%-30s|%-20s|%4d|%7d|%5d|%9d|%8d", 
+				title, 
+				author.getPseudonym(), 
+				yearPublished, 
+				edition, 
+				numberOfCopies, 
+				copiesAvailable, 
+				numberOfCopies-copiesAvailable);
 	}
 
 	@Override
